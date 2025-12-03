@@ -8,7 +8,9 @@ class User:
 
     @staticmethod
     def hash_password(password):
-        return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+        if isinstance(password, bytes):
+            password = password.decode()
+        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     
     def authenticate(self, password):
         return bcrypt.checkpw(password.encode(), self.password_hash.encode())
